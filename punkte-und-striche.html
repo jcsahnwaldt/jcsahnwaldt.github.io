@@ -23,17 +23,17 @@ function solution(pos, text, width, height, x0, y0, path, link) {
     document.body.appendChild(v);
   }
 
-  const d = 40;
-
+  const s = 16;
   c.fillStyle = 'black';
-  c.font = '16px sans-serif';
+  c.font = s + 'px sans-serif';
   c.textAlign = 'center';
-  let y = 16;
+  let y = 0;
   for (let line of text) {
+    y += s;
     c.fillText(line, pos, y);
-    y += 16;
   }
 
+  const d = 40;
   c.fillStyle = '#80C0F0';
   for (let i = 0; i < 4; i++) {
     for (let j = 0; j < 4; j++) {
@@ -96,7 +96,7 @@ solution(160, ['K3. Fuchs'],
   [[-1,3], [3,-1], [3,3], [-2,3], [2,-1], [2,4], [0,0]]
 );
 
-solution(120, ['K4. Weihnachsstern'],
+solution(120, ['K4. Weihnachtsstern'],
   240, 260, 60, 80,
   [[-1,-1], [4,4], [3/2,-1], [-1,4], [4,-1], [3/2,4], [-1,-1]]
 );
