@@ -1,0 +1,81 @@
+<html>
+
+<head>
+<script>
+MathJax = {
+  tex: {inlineMath: [['$', '$']]}
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+
+<body style="text-align: center;">
+
+<div style="float: left;">
+
+<h3>Derivation of $
+{c^2 \over h^2}
+= 2 + {p \over q} + {q \over p}
+$</h3>
+
+<svg width="360" height="360">
+
+  <path d="M 38.6,280 v -200 h 282.8" stroke-width="3" stroke="#00C0C0" fill="none" stroke-linecap="round" />
+
+  <line x1="38.6" y1="280" x2="321.4" y2="80" stroke-width="3" stroke="#0090F0" stroke-linecap="round" />
+  <line x1="38.6" y1="80" x2="132.9" y2="213.3" stroke-width="3" stroke="#0090F0" stroke-linecap="round" />
+
+  <text x="44" y="180" fill="#00C0C0" style="font: 24px serif">a</text>
+  <text x="150" y="102" fill="#00C0C0" style="font: 24px serif">b</text>
+
+  <text x="88" y="145" fill="#0090F0" style="font: 24px serif">h</text>
+  <text x="135" y="230" fill="#0090F0" style="font: 24px serif">c</text>
+
+  <text x="72" y="240" fill="#0090F0" style="font: 24px serif">p</text>
+  <text x="200" y="147" fill="#0090F0" style="font: 24px serif">q</text>
+</svg>
+
+</div>
+
+
+<div style="float: left;">
+$$
+{p \over a} = {h \over b}, \quad
+{q \over b} = {h \over a}
+$$
+
+$$
+\Rightarrow
+p = h \cdot {a \over b}, \quad
+q = h \cdot {b \over a}
+$$
+
+$$
+\Rightarrow
+{p \over q} = {a^2 \over b^2}, \quad
+{q \over p} = {b^2 \over a^2}
+$$
+</p>
+<br/>
+<p>
+$$
+c = p + q = h \cdot ({a \over b} + {b \over a})
+$$
+
+$$
+\Rightarrow
+c^2 = h^2 \cdot ({a \over b} + {b \over a})^2
+$$
+
+$$
+\Rightarrow
+{c^2 \over h^2} = {a^2 \over b^2} + 2 + {b^2 \over a^2}
+$$
+
+$$
+= 2 + {p \over q} + {q \over p}
+$$
+</div>
+
+</body>
+</html>
