@@ -36,16 +36,20 @@
   .time {
     width: 120px;
   }
-
   </style>
   <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script>
 </head>
 <body>
 
+<label for="file">Open SRT file:</label>
 <input type="file" id="file" accept=".srt"> <!-- TODO: ".srt,.vtt" -->
 <table>
   <thead>
-    <tr><th class="time">Start</th><th class="time">End</th><th>Text</th></tr>
+    <tr>
+      <th class="time">Start</th>
+      <th class="time">End</th>
+      <th>Text</th>
+    </tr>
   </thead>
   <tbody>
   </tbody>
