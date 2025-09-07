@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>subtitle timestamps</title>
+  <style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  table {
+    width: 100%;
+    border-spacing: 0;
+    border: 1px solid black;
+  }
+  thead, tbody {
+    display: block;
+  }
+  thead {
+    border-bottom: 1px solid black;
+  }
+  tbody {
+    height: 300px;
+    overflow: auto;
+  }
+  th {
+    padding: 2px 5px;
+    text-align: left;
+    border-right: 1px solid black;
+  }
+  th:last-child {
+    border-right: none;
+  }
+  td {
+    padding: 2px 5px;
+  }
+  .time {
+    width: 120px;
+  }
+
+  </style>
+  <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script>
+</head>
+<body>
+
+<input type="file" id="file" accept=".srt"> <!-- TODO: ".srt,.vtt" -->
+<table>
+  <thead>
+    <tr><th class="time">Start</th><th class="time">End</th><th>Text</th></tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+
+<script>
+document.getElementById('file').addEventListener('change', function(event) {
+  event.target.files[0].text().then(content => {
+    // TODO: support .vtt
+    $('tbody').empty();
+    const blocks = content.split('\n\n');
+    for (const block of blocks) {
+      const lines = block.split('\n');
+      const times = lines[1].split(' --> ');
+      const start = parseTime(times[0]);
+      const end = parseTime(times[1]);
+      const text = lines.slice(2).join(' / ');
+      $('tbody').append(
+        $('<tr>').append([
+          $('<td>', {class: 'time'}).text(formatTime(start)),
+          $('<td>', {class: 'time'}).text(formatTime(end)),
+          $('<td>').text(text)
+        ])
+      );
+    }
+  });
+});
+
+function parseTime(time) {
+  return new Date('1970-01-01T' + time.replace(',', '.') + 'Z');
+}
+
+function formatTime(date) {
+  return date.toISOString().substring(11, 23).replace('.', ',');
+}
+</script>
+
+</body>
+</html>
