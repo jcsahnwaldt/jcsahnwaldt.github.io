@@ -20,12 +20,16 @@
   </thead>
   <tbody id="tbody"/>
 </table>
+<button id="download">Download modified file</button>
 
 <script>
 let entries = [];
+let filename = '';
 
 $('#file').on('change', event => {
-  event.target.files[0].text().then(content => {
+  const file = event.target.files[0];
+  filename = file.name;
+  file.text().then(content => {
     parseEntries(content);
     const tbody = $('#tbody');
     tbody.empty();
@@ -41,11 +45,31 @@ $('#file').on('change', event => {
   });
 });
 
+$('#download').on('click', () => {
+  if (entries.length === 0) return;
+  const content = formatEntries();
+  const blob = new Blob([content], {type: 'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a = $('<a>')
+    .attr('href', url)
+    .attr('download', modifiedFilename())
+    .css('display', 'none')
+    .appendTo('body');
+  a[0].click();
+  a.remove();
+  URL.revokeObjectURL(url);
+});
+
+function modifiedFilename() {
+  const dot = filename.lastIndexOf('.');
+  return filename.substring(0, dot) + '_modified' + filename.substring(dot);
+}
+
 function parseEntries(text) {
   entries = [];
   // TODO: support .vtt
   // TODO: support \r\n and \r
-  const blocks = text.split('\n\n');
+  const blocks = text.trim().split('\n\n');
   for (const block of blocks) {
     const lines = block.split('\n');
     const times = lines[1].split(' --> ');
@@ -54,6 +78,19 @@ function parseEntries(text) {
     const text = lines.slice(2);
     entries.push({start, end, text});
   }
+}
+
+function formatEntries() {
+  // TODO: support \r\n and \r
+  let result = '';
+  let index = 0;
+  for (const entry of entries) {
+    if (index > 0) result += '\n';
+    result += ++index + '\n';
+    result += formatTime(entry.start) + ' --> ' + formatTime(entry.end) + '\n';
+    for (const line of entry.text) result += line + '\n';
+  }
+  return result;
 }
 
 function parseTime(time) {
