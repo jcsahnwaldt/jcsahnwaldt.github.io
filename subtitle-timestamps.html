@@ -9,7 +9,7 @@
 <body>
 
 <label for="file">Open SRT file:</label>
-<input type="file" id="file" accept=".srt"> <!-- TODO: ".srt,.vtt" -->
+<input type="file" id="file" accept=".srt"><!-- TODO: ".srt,.vtt" -->
 <table>
   <thead>
     <tr>
@@ -18,32 +18,42 @@
       <th>Text</th>
     </tr>
   </thead>
-  <tbody>
-  </tbody>
+  <tbody id="tbody"/>
 </table>
 
 <script>
-document.getElementById('file').addEventListener('change', function(event) {
+let entries = [];
+
+$('#file').on('change', event => {
   event.target.files[0].text().then(content => {
-    // TODO: support .vtt
-    $('tbody').empty();
-    const blocks = content.split('\n\n');
-    for (const block of blocks) {
-      const lines = block.split('\n');
-      const times = lines[1].split(' --> ');
-      const start = parseTime(times[0]);
-      const end = parseTime(times[1]);
-      const text = lines.slice(2).join(' / ');
-      $('tbody').append(
+    parseEntries(content);
+    const tbody = $('#tbody');
+    tbody.empty();
+    for (const entry of entries) {
+      tbody.append(
         $('<tr>').append([
-          $('<td>', {class: 'time'}).text(formatTime(start)),
-          $('<td>', {class: 'time'}).text(formatTime(end)),
-          $('<td>').text(text)
+          $('<td>', {class: 'time'}).text(formatTime(entry.start)),
+          $('<td>', {class: 'time'}).text(formatTime(entry.end)),
+          $('<td>').text(entry.text)
         ])
       );
     }
   });
 });
+
+function parseEntries(text) {
+  entries = [];
+  // TODO: support .vtt
+  const blocks = text.split('\n\n');
+  for (const block of blocks) {
+    const lines = block.split('\n');
+    const times = lines[1].split(' --> ');
+    const start = parseTime(times[0]);
+    const end = parseTime(times[1]);
+    const text = lines.slice(2).join(' / ');
+    entries.push({start, end, text});
+  }
+}
 
 function parseTime(time) {
   return new Date('1970-01-01T' + time.replace(',', '.') + 'Z');
