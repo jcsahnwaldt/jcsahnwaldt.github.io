@@ -67,9 +67,9 @@ function modifiedFilename() {
 
 function parseEntries(text) {
   entries = [];
-  // TODO: support .vtt
+  // TODO: support .vtt: https://w3c.github.io/webvtt/
   // TODO: support \r\n and \r
-  const blocks = text.trim().split('\n\n');
+  const blocks = text.trim().split(/\n\n+/);
   for (const block of blocks) {
     const lines = block.split('\n');
     const times = lines[1].split(' --> ');
