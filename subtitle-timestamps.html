@@ -26,9 +26,9 @@
   <label for="modify">Modify file:</label>
   <button id="modify">Modify</button>
   <label for="factor">Factor:</label>
-  <input id="factor" type="text" value="1.0" placeholder="e.g. 0.9, 1.1" pattern="\s*\d\d?(\.\d*)?\s*">
+  <input id="factor" type="text" value="1.0" placeholder="1.0" pattern="\s*\d\d?(\.\d*)?\s*">
   <label for="offset">Offset:</label>
-  <input id="offset" type="text" value="00:00:00,000" pattern="\s*(2[0-3]|[01]\d):[0-5]\d:[0-5]\d,\d{3}\s*" placeholder="hh:mm:ss,mmm">
+  <input id="offset" type="text" value="00:00:00,000" pattern="\s*-?(2[0-3]|[01]\d):[0-5]\d:[0-5]\d,\d{3}\s*" placeholder="(-)hh:mm:ss,mmm">
 </form>
 
 <table>
@@ -49,7 +49,7 @@
 let entries = [];
 let filename = '';
 let factor = 1.0;
-let offset = new Date(0);
+let offset = 0;
 
 $('#load').on('change', event => {
   const file = event.target.files[0];
@@ -102,44 +102,50 @@ function parseEntries(text) {
 }
 
 function fillTable(tbodyId, modify = false) {
-  if (modify) {
-    factor = Number($('#factor').val());
-    if (isNaN(factor) || factor < 0 || factor >= 100) factor = 1.0;
-    offset = parseTime($('#offset').val().trim());
-    if (isNaN(offset.getTime())) offset = new Date(0);
-  }
+  if (modify) parseParams();
   const tbody = $(tbodyId);
   tbody.empty();
-  for (const entry of entries) {
+  for (const e of entries) {
     tbody.append(
       $('<tr>').append([
-        $('<td>').addClass('time').text(formatTime(entry.start, modify)),
-        $('<td>').addClass('time').text(formatTime(entry.end, modify)),
-        $('<td>').text(entry.text.join(' / '))
+        $('<td>').addClass('time').text(formatTime(e.start, modify)),
+        $('<td>').addClass('time').text(formatTime(e.end, modify)),
+        $('<td>').text(e.text.join(' / '))
       ])
     );
   }
+}
+
+function parseParams() {
+  let input = $('#factor');
+  factor = input[0].validity.valid ? Number(input.val().trim()) : 1.0;
+  input = $('#offset');
+  offset = input[0].validity.valid ? parseOffset(input.val().trim()) : 0;
 }
 
 function formatEntries(modify = false) {
   // TODO: support \r\n and \r
   let result = '';
   let index = 0;
-  for (const entry of entries) {
+  for (const e of entries) {
     if (index > 0) result += '\n';
     result += ++index + '\n';
-    result += formatTime(entry.start, modify) + ' --> ' + formatTime(entry.end, modify) + '\n';
-    for (const line of entry.text) result += line + '\n';
+    result += formatTime(e.start, modify) + ' --> ' + formatTime(e.end, modify) + '\n';
+    for (const line of e.text) result += line + '\n';
   }
   return result;
 }
 
-function parseTime(time) {
-  return new Date('1970-01-01T' + time.replace(',', '.') + 'Z');
+function parseOffset(offset) {
+  return offset.startsWith('-') ? - parseTime(offset.substring(1)) : parseTime(offset);
 }
 
-function formatTime(date, modify = false) {
-  if (modify) date = new Date(date.getTime() * factor + offset.getTime());
+function parseTime(time) {
+  return Date.parse('1970-01-01T' + time.replace(',', '.') + 'Z');
+}
+
+function formatTime(time, modify = false) {
+  const date = new Date(modify ? time * factor + offset : time);
   return date.toISOString().substring(11, 23).replace('.', ',');
 }
 </script>
