@@ -5,7 +5,7 @@ table {
   width: 100%;
   border-spacing: 0;
   border: 1px solid black;
-  margin: 8px 0px;
+  margin: 4px 0px;
 }
 thead, tbody {
   display: block;
@@ -14,7 +14,7 @@ thead {
   border-bottom: 1px solid black;
 }
 tbody {
-  height: 300px;
+  height: 240px;
   overflow: auto;
 }
 th {
@@ -33,4 +33,15 @@ td {
 }
 input:invalid {
   color: red;
+}
+label {
+  display: inline-block;
+  width: 54px;
+  text-align: right;
+  margin: 4px 0px;
+}
+@media (min-width: 640px) {
+  br {
+    display: none;
+  }
 }

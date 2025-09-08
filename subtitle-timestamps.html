@@ -5,10 +5,11 @@
   <title>subtitle timestamps</title>
   <link rel="stylesheet" href="subtitle-timestamps.css">
   <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
-<label for="file">Load file:</label>
+<label for="file">Load:</label>
 <input id="load" type="file" accept=".srt"><!-- TODO: ".srt,.vtt" -->
 
 <table>
@@ -23,10 +24,12 @@
 </table>
 
 <form id="form">
-  <label for="modify">Modify file:</label>
+  <label for="modify">Modify:</label>
   <button id="modify">Modify</button>
+  <br>
   <label for="factor">Factor:</label>
-  <input id="factor" type="text" value="1.0" placeholder="1.0" pattern="\s*\d\d?(\.\d*)?\s*" required>
+  <input id="factor" type="text" value="1.0" placeholder="1.0" pattern="\s*\d?\d?(\.\d+)?\s*" required>
+  <br>
   <label for="offset">Offset:</label>
   <input id="offset" type="text" value="00:00:00,000" pattern="\s*-?(2[0-3]|[01]\d):[0-5]\d:[0-5]\d,\d{3}\s*" placeholder="(-)hh:mm:ss,mmm" required>
 </form>
@@ -42,7 +45,7 @@
   <tbody id="tbody-modified"/>
 </table>
 
-<label for="save">Save file:</label>
+<label for="save">Save:</label>
 <button id="save">Save</button>
 
 <script>
@@ -116,13 +119,6 @@ function fillTable(tbodyId, modify = false) {
   }
 }
 
-function parseParams() {
-  let input = $('#factor');
-  factor = input[0].validity.valid ? Number(input.val().trim()) : 1.0;
-  input = $('#offset');
-  offset = input[0].validity.valid ? parseOffset(input.val().trim()) : 0;
-}
-
 function formatEntries(modify = false) {
   // TODO: support \r\n and \r
   let result = '';
@@ -134,6 +130,13 @@ function formatEntries(modify = false) {
     for (const line of e.text) result += line + '\n';
   }
   return result;
+}
+
+function parseParams() {
+  let input = $('#factor');
+  factor = input[0].validity.valid ? Number(input.val().trim()) : 1.0;
+  input = $('#offset');
+  offset = input[0].validity.valid ? parseOffset(input.val().trim()) : 0;
 }
 
 function parseOffset(offset) {
