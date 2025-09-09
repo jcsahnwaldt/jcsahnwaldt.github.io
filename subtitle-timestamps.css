@@ -28,8 +28,12 @@ th:last-child {
 td {
   padding: 2px 5px;
 }
-.time {
+th.time, td.time {
   width: 120px;
+}
+th.control, td.control {
+  width: 22px;
+  text-align: center;
 }
 input:invalid {
   color: red;

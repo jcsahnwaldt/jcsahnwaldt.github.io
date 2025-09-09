@@ -15,6 +15,8 @@
 <table>
   <thead>
     <tr>
+      <th class="control"></th>
+      <th class="time">Enter Start</th>
       <th class="time">Start</th>
       <th class="time">End</th>
       <th>Text</th>
@@ -37,6 +39,8 @@
 <table>
   <thead>
     <tr>
+      <th class="control"></th>
+      <th class="time"></th>
       <th class="time">Start</th>
       <th class="time">End</th>
       <th>Text</th>
@@ -111,6 +115,8 @@ function fillTable(tbodyId, modify = false) {
   for (const e of entries) {
     tbody.append(
       $('<tr>').append([
+        $('<td>').addClass('control').html(modify ? '' : '<button>&#x2197;</button>'),
+        $('<td>').addClass('time'),
         $('<td>').addClass('time').text(formatTime(e.start, modify)),
         $('<td>').addClass('time').text(formatTime(e.end, modify)),
         $('<td>').text(e.text.join(' / '))
