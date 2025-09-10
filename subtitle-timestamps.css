@@ -3,9 +3,10 @@ body {
 }
 table {
   width: 100%;
-  border-spacing: 0;
   border: 1px solid black;
   margin: 4px 0px;
+  border-collapse: collapse;
+  table-layout: fixed;
 }
 thead, tbody {
   display: block;
@@ -17,23 +18,30 @@ tbody {
   height: 240px;
   overflow: auto;
 }
+tr {
+  display: table;
+  width: 100%;
+}
+#tbody-original tr:hover {
+  border-top: 1px solid black;
+}
+th, td {
+  padding: 2px 5px;
+}
 th {
-  padding: 2px 5px;
   text-align: left;
-  border-right: 1px solid black;
 }
-th:last-child {
-  border-right: none;
+th + th {
+  border-left: 1px solid black;
 }
-td {
-  padding: 2px 5px;
+th.control, td.control {
+  width: 12px;
 }
 th.time, td.time {
   width: 120px;
 }
-th.control, td.control {
-  width: 22px;
-  text-align: center;
+td.text {
+  white-space: pre-wrap;
 }
 input:invalid {
   color: red;

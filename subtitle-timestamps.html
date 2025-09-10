@@ -19,7 +19,7 @@
       <th class="time">Enter Start</th>
       <th class="time">Start</th>
       <th class="time">End</th>
-      <th>Text</th>
+      <th class="text">Text</th>
     </tr>
   </thead>
   <tbody id="tbody-original"/>
@@ -43,7 +43,7 @@
       <th class="time"></th>
       <th class="time">Start</th>
       <th class="time">End</th>
-      <th>Text</th>
+      <th class="text">Text</th>
     </tr>
   </thead>
   <tbody id="tbody-modified"/>
@@ -112,14 +112,15 @@ function fillTable(tbodyId, modify = false) {
   if (modify) parseParams();
   const tbody = $(tbodyId);
   tbody.empty();
-  for (const e of entries) {
+  for (const i in entries) {
+    const e = entries[i];
     tbody.append(
       $('<tr>').append([
-        $('<td>').addClass('control').html(modify ? '' : '<button>&#x2197;</button>'),
+        $('<td>').addClass('control'),
         $('<td>').addClass('time'),
         $('<td>').addClass('time').text(formatTime(e.start, modify)),
         $('<td>').addClass('time').text(formatTime(e.end, modify)),
-        $('<td>').text(e.text.join(' / '))
+        $('<td>').addClass('text').text(e.text.join('\n'))
       ])
     );
   }
