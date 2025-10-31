@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Iterated Tetration</title>
+<style>
+body { font-family: sans-serif; }
+input { margin: 5px; }
+label { display: inline-block; width: 20px; text-align: right; }
+input:invalid { color: red; }
+.error { color: red; }
+</style>
+<script>
+function validate(input) {
+  input.nextSibling.textContent = input.validationMessage;
+}
+
+let timeout = undefined;
+
+function go() {
+  let x = document.getElementById('x');
+  let n = document.getElementById('n');
+  if (! x.validity.valid || ! n.validity.valid) return;
+  x = Number(x.value.trim());
+  n = Number(n.value.trim());
+  let out = document.getElementById('out');
+  out.innerText = '';
+  let i = 1;
+  let p = 1;
+  let y = x;
+  clearTimeout(timeout);
+  function iterate() {
+    document.getElementById('count').innerText = i;
+    if (i == p-1 || i == p || i == p+1 || i == n-1 || i == n) out.innerText += i + ': ' + y + '\n';
+    if (i == p+1) p = p < 1000 ? p * 10 : p + 1000;
+    y = Math.pow(x, y);
+    i++;
+    if (i <= n) timeout = setTimeout(iterate, 0);
+  }
+  iterate();
+}
+
+</script>
+</head>
+<h4>Iterated Tetration</h4>
+Inspired by (an error in) <a href="https://www.youtube.com/watch?v=z-SXMumnZB8">this video</a>.<br>
+<br>
+
+<label for="x">x:</label>
+<input id="x" type="number" min="0" max="2" step="0.000000000001" onkeyup="validate(this)" value="1.44466786101"/>
+<span class="error"></span>
+<br>
+
+<label for="n">n:</label>
+<input id="n" type="number" min="1" step="1" onkeyup="validate(this)" value="10000" />
+<span class="error"></span>
+<br>
+
+<label></label>
+<input type="button" onclick="go()" value="Go" />
+<input type="button" onclick="clearTimeout(timeout)" value="Stop" />
+<br>
+
+<span id="count">
+</span>
+<br>
+
+<span id="out">
+</span>
+<br>
+
+</html>
