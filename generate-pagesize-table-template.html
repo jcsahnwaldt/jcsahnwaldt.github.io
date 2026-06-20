@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Generate template Pagesize table</title>
+<style>
+html { font-family: sans-serif }
+</style>
+<script>
+// no indentation :-( https://github.com/tc39/proposal-string-dedent/
+function generate() {
+
+const count = parseInt(document.getElementById('count').value);
+
+let text =
+`{| class="wikitable sortable"
+! Title
+! Size
+|-
+| [[:{{{1}}}]]
+| {{PAGESIZE:{{{1}}}}}
+|-<!--
+-->`;
+
+for (let i = 2; i <= count; i++) {
+
+// little idiosyncrasies of the 2026-06-20 version :-)
+const sp = i % 10 < 6 && i != 1000 ? ' ' : '';
+const br = i > 100 && i % 100 == 9 ? '\n' : '';
+
+text +=
+`{{#ifexist:{{{${i}|}}}
+   |<span style="display:none;">test</span>
+{{!}}-
+{{!}}${sp}[[:{{{${i}}}}]]
+{{!}}${sp}{{PAGESIZE:{{{${i}}}}}}
+   |}}<!--
+${br}-->`;
+
+}
+
+text +=
+`
+|}<noinclude>
+
+{{Documentation}}</noinclude>
+`;
+
+document.getElementById('text').value = text;
+}
+</script>
+</head>
+<body>
+
+This app generates the code for
+<a href="https://en.wikipedia.org/wiki/Template:Pagesize_table">Template:Pagesize_table</a>
+on the English Wikipedia.
+<br/>
+
+Enter the number of entries, press the button,
+and copy the result into the template.
+<br/>
+
+<input id="count" type="number"/>
+<br/>
+
+<button onclick="generate()">Generate</button>
+<br/>
+
+<textarea id="text" rows="40" cols="80">
+</textarea>
+
+</body>
+</html>
