@@ -11,7 +11,14 @@ html { font-family: sans-serif }
 // no indentation :-( https://github.com/tc39/proposal-string-dedent/
 function generate() {
    const start = parseInt(document.getElementById('start').value);
+   const step = parseInt(document.getElementById('step').value);
    const end = parseInt(document.getElementById('end').value);
+
+   const loops = (end - start) / step;
+   if (loops < 0 || loops > 1E6) {
+      document.getElementById('result').value = 'Error: ' + loops + ' loops';
+      return;
+   }
 
    let result = "";
 
@@ -19,7 +26,7 @@ function generate() {
 
    const body = document.getElementById('body').value;
 
-   for (let i = start; i <= end; i++) {
+   for (let i = start; step > 0 ? i <= end : i >= end; i += step) {
       result += body.replace("${i}", i);
    }
 
@@ -43,13 +50,22 @@ Start index:<br/>
 <input id="start" type="number" value="2"/>
 </div>
 
-<div class="block" style="vertical-align: bottom;">
-<button style="vertical-align: bottom;" onclick="generate()">Generate</button>
+<div class="block">
+Step:<br/>
+<input id="step" type="number" value="1"/>
 </div>
 
 <div class="block">
 End index:<br/>
 <input id="end" type="number" value="5"/>
+</div>
+
+</div>
+
+<div class="container">
+
+<div class="block" style="vertical-align: bottom;">
+<button style="vertical-align: bottom;" onclick="generate()">Generate</button>
 </div>
 
 </div>
