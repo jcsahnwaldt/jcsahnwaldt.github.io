@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Generate text</title>
+<style>
+html { font-family: sans-serif }
+.container { display: flex; margin: 10px; align-items: flex-end; }
+.block { width: 350px; }
+</style>
+<script>
+// no indentation :-( https://github.com/tc39/proposal-string-dedent/
+function generate() {
+   const start = parseInt(document.getElementById('start').value);
+   const end = parseInt(document.getElementById('end').value);
+
+   let result = "";
+
+   result += document.getElementById('prefix').value;
+
+   const body = document.getElementById('body').value;
+
+   for (let i = start; i <= end; i++) {
+      result += body.replace("${i}", i);
+   }
+
+   result += document.getElementById('suffix').value;
+
+   document.getElementById('result').value = result;
+}
+</script>
+</head>
+<body onload="generate()">
+
+<div class="container">
+Generate text by repeatedly evaluating a template.
+<br/>
+</div>
+
+<div class="container">
+
+<div class="block">
+Start index:<br/>
+<input id="start" type="number" value="2"/>
+</div>
+
+<div class="block" style="vertical-align: bottom;">
+<button style="vertical-align: bottom;" onclick="generate()">Generate</button>
+</div>
+
+<div class="block">
+End index:<br/>
+<input id="end" type="number" value="5"/>
+</div>
+
+</div>
+
+<div class="container">
+
+<div class="block">
+Prefix<br/>
+<textarea id="prefix" rows="20" cols="40">
+Prefix
+</textarea>
+</div>
+
+<div class="block">
+Body (<code>${i}</code> will be replaced by index)<br/>
+<textarea id="body" rows="20" cols="40">
+Body ${i}
+</textarea>
+</div>
+
+<div class="block">
+Suffix<br/>
+<textarea id="suffix" rows="20" cols="40">
+Suffix
+</textarea>
+</div>
+
+</div>
+
+<div class="container">
+
+<div class="block">
+Result<br/>
+<textarea id="result" rows="20" cols="40" readonly>
+</textarea>
+</div>
+
+</div>
+
+</body>
+</html>
