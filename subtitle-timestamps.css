@@ -22,10 +22,6 @@ tr {
   display: table;
   width: 100%;
 }
-/* #tbody-original tr:hover { */
-#tbody-original tr:has(td.control:hover):not(:first-child) {
-  border-top: 1px solid black;
-}
 th, td {
   padding: 2px 5px;
 }
@@ -34,9 +30,6 @@ th {
 }
 th + th {
   border-left: 1px solid black;
-}
-th.control, td.control {
-  width: 12px;
 }
 th.time, td.time {
   width: 120px;
