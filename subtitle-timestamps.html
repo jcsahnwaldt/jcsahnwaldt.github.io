@@ -15,8 +15,6 @@
 <table>
   <thead>
     <tr>
-      <th class="control"></th>
-      <th class="time">Enter Start</th>
       <th class="time">Start</th>
       <th class="time">End</th>
       <th class="text">Text</th>
@@ -39,8 +37,6 @@
 <table>
   <thead>
     <tr>
-      <th class="control"></th>
-      <th class="time"></th>
       <th class="time">Start</th>
       <th class="time">End</th>
       <th class="text">Text</th>
@@ -116,8 +112,6 @@ function fillTable(tbodyId, modify = false) {
     const e = entries[i];
     tbody.append(
       $('<tr>').append([
-        $('<td>').addClass('control'),
-        $('<td>').addClass('time'),
         $('<td>').addClass('time').text(formatTime(e.start, modify)),
         $('<td>').addClass('time').text(formatTime(e.end, modify)),
         $('<td>').addClass('text').text(e.text.join('\n'))
